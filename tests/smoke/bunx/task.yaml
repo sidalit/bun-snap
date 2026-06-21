@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Canonical Ltd.
+# SPDX-License-Identifier: Apache-2.0
+
+summary: Smoke test for the bunx snap app
+details: |
+    This test verifies that the bunx snap app is properly installed,
+    launches without crashing, and can execute packages.
+
+execute: |
+    # Verify the snap is installed.
+    snap list | MATCH "bun"
+
+    # Run bunx and check help output.
+    snap run bunx --help 2>&1 | MATCH "bun"

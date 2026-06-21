@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Canonical Ltd.
+
+*.img
+*.iso
+*.lock
+*.log
+*.meta-data
+*.qcow2
+*.run
+*.user-data

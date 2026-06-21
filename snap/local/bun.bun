@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2026 Canonical Ltd.
+#
+# SPDX-License-Identifier: MIT
+
+# bash completion for bun
+_bun() {
+    local cur prev opts
+    COMPREPLY=()
+
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    opts="--help --version --use bun --use node --use system-node -h -v"
+
+    case "${prev}" in
+        run)
+            COMPREPLY=$(compgen -W "$(bun run --list 2>/dev/null | tail -n +2 | awk '{print $1}')" -- "${cur}")
+            return 0
+            ;;
+        install|i|add|remove|update|link|unlink|outdated|patch|why|audit|info|publish)
+            COMPREPLY=()
+            return 0
+            ;;
+        test)
+            COMPREPLY=()
+            return 0
+            ;;
+        init|create)
+            COMPREPLY=()
+            return 0
+            ;;
+        *)
+            COMPREPLY=$(compgen -W "run install add remove update link unlink outdated patch why audit info publish test init create x upgrade --help --version" -- "${cur}")
+            return 0
+            ;;
+    esac
+
+    COMPREPLY=$(compgen -W "${opts}" -- "${cur}")
+}
+
+complete -F _bun bun
+complete -F _bun bunx

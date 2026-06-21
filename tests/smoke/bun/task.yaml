@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Canonical Ltd.
+# SPDX-License-Identifier: Apache-2.0
+
+summary: Smoke test for the bun snap
+details: |
+    This test verifies that the bun snap is properly installed,
+    launches without crashing, and prints version and help output.
+
+execute: |
+    # Verify the snap is installed.
+    snap list | MATCH "bun"
+
+    # Run bun and check version output.
+    snap run bun --version
+
+    # Run bun and check help output.
+    snap run bun --help 2>&1 | MATCH "bun"

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**",
+    "**/examples/**",
+    "**/__fixtures__/**"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update bun version in snapcraft.yaml",
+      "managerFilePatterns": [
+        "snap/snapcraft\\.yaml"
+      ],
+      "matchStrings": [
+        "https://github\\.com/oven-sh/bun/releases/download/bun-v(?<currentValue>[^/]+)/bun-linux-"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "oven-sh/bun",
+      "extractVersionTemplate": "^bun-v(?<version>.+)$",
+      "versioningTemplate": "semver-coerced"
+    }
+  ]
+}

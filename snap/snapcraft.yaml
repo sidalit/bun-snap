@@ -1,0 +1,65 @@
+# SPDX-FileCopyrightText: 2026 Canonical Ltd.
+#
+# SPDX-License-Identifier: MIT
+
+name: bun
+base: core24
+title: Bun
+summary: Incredibly fast JavaScript runtime, bundler, test runner, and package manager
+description: |
+  Bun is an all-in-one toolkit for JavaScript and TypeScript apps. It ships as
+  a single executable called `bun`.
+
+  At its core is the Bun runtime, a fast JavaScript runtime designed as a
+  drop-in replacement for Node.js. It's written in Zig and powered by
+  JavaScriptCore under the hood, dramatically reducing startup times and
+  memory usage.
+
+  Bun also includes a test runner, script runner, and Node.js-compatible
+  package manager.
+
+  The snap packaging is maintained separately at
+  https://github.com/canonical/bun-snap
+license: MIT
+contact: https://github.com/oven-sh/bun/issues
+website: https://bun.com
+source-code: https://github.com/oven-sh/bun
+issues: https://github.com/oven-sh/bun/issues
+adopt-info: bun
+
+grade: stable
+confinement: classic
+
+platforms:
+  amd64:
+    build-on: [amd64]
+    build-for: [amd64]
+  arm64:
+    build-on: [arm64]
+    build-for: [arm64]
+
+apps:
+  bun:
+    command: bin/bun
+    completer: usr/share/bash-completion/completions/bun.bun
+  bunx:
+    command: bin/bunx
+    completer: usr/share/bash-completion/completions/bun.bun
+
+parts:
+  bun:
+    plugin: dump
+    source:
+      - on amd64 to amd64: https://github.com/oven-sh/bun/releases/download/bun-v1.3.14/bun-linux-x64.zip
+      - on arm64 to arm64: https://github.com/oven-sh/bun/releases/download/bun-v1.3.14/bun-linux-aarch64.zip
+    override-build: |
+      install -Dm755 "${CRAFT_PART_SRC}"/bun-linux-*/bun "${CRAFT_PART_INSTALL}"/bin/bun
+      ln -sf bun "${CRAFT_PART_INSTALL}"/bin/bunx
+      craftctl set version="$("${CRAFT_PART_INSTALL}"/bin/bun --version)"
+
+  bun-configuration:
+    plugin: nil
+    source: snap/local
+    override-build: |
+      install -Dm644 "$CRAFT_PART_SRC"/bun.bun \
+        "$CRAFT_PART_INSTALL"/usr/share/bash-completion/completions/bun.bun

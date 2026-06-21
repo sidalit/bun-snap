@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Canonical Ltd.
+#
+# SPDX-License-Identifier: MIT
+
+*.snap
+*.comp
+*.spread-reuse.yaml
+.spread-reuse.*.yaml
