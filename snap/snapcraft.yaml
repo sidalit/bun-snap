@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 name: bun
+version: '1.4.4'
 base: core24
 title: Bun
 summary: Incredibly fast JavaScript runtime, bundler, test runner, and package manager
@@ -25,7 +26,6 @@ contact: https://github.com/oven-sh/bun/issues
 website: https://bun.com
 source-code: https://github.com/oven-sh/bun
 issues: https://github.com/oven-sh/bun/issues
-adopt-info: bun
 
 grade: stable
 confinement: classic
@@ -50,16 +50,16 @@ parts:
   bun:
     plugin: dump
     source:
-      - on amd64 to amd64: https://github.com/oven-sh/bun/releases/download/bun-v1.3.14/bun-linux-x64.zip
-      - on arm64 to arm64: https://github.com/oven-sh/bun/releases/download/bun-v1.3.14/bun-linux-aarch64.zip
+      - on amd64 to amd64: https://github.com/oven-sh/bun/releases/download/bun-v${SNAPCRAFT_PROJECT_VERSION}/bun-linux-x64.zip
+      - on arm64 to arm64: https://github.com/oven-sh/bun/releases/download/bun-v${SNAPCRAFT_PROJECT_VERSION}/bun-linux-aarch64.zip
     override-build: |
       install -Dm755 "${CRAFT_PART_SRC}"/bun-linux-*/bun "${CRAFT_PART_INSTALL}"/bin/bun
       ln -sf bun "${CRAFT_PART_INSTALL}"/bin/bunx
-      craftctl set version="$("${CRAFT_PART_INSTALL}"/bin/bun --version)"
 
   bun-configuration:
     plugin: nil
-    source: snap/local
+    source: https://raw.githubusercontent.com/oven-sh/bun/bun-v${SNAPCRAFT_PROJECT_VERSION}/completions/bun.bash
+    source-type: file
     override-build: |
-      install -Dm644 "$CRAFT_PART_SRC"/bun.bun \
+      install -Dm644 "$CRAFT_PART_SRC"/bun.bash \
         "$CRAFT_PART_INSTALL"/usr/share/bash-completion/completions/bun.bun
